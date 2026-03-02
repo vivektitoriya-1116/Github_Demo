@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Paperie & Co.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2; --warm-white: #fff9f0; --ink: #1a1410;
+    --bark: #3d2b1f; --terracotta: #c4623a; --sage: #7a9e7e;
+    --gold: #c9a84c; --light-gold: #f0e4c0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); }
+  nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 5vw; background: var(--cream); border-bottom: 1px solid rgba(61,43,31,0.12); }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--bark); text-decoration: none; }
+  .logo span { color: var(--terracotta); font-style: italic; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--bark); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--terracotta); }
+  .cart-btn { background: var(--ink); color: var(--cream); border: none; cursor: pointer; padding: 0.55rem 1.3rem; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; transition: background 0.2s; }
+  .cart-btn:hover { background: var(--terracotta); }
+
+  /* MANIFESTO HERO */
+  .manifesto {
+    min-height: 90vh; display: grid; grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+  }
+  .manifesto-text {
+    background: var(--bark); padding: 8rem 5vw; display: flex;
+    flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .manifesto-text::before { content: '"'; position: absolute; top: -2rem; left: 3vw; font-family: 'Playfair Display', serif; font-size: 20rem; color: rgba(250,247,242,0.04); line-height: 1; }
+  .manifesto-tag { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 2rem; }
+  .manifesto h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem,4vw,3.5rem); color: var(--cream); line-height: 1.2; margin-bottom: 2rem; }
+  .manifesto h1 em { color: var(--gold); }
+  .manifesto-quote { font-size: 1rem; color: rgba(250,247,242,0.55); line-height: 1.8; border-left: 2px solid var(--gold); padding-left: 1.5rem; font-style: italic; max-width: 460px; }
+  .manifesto-visual {
+    background: linear-gradient(160deg, var(--light-gold) 0%, #d4b090 50%, #c49070 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10rem; position: relative; overflow: hidden;
+  }
+  .manifesto-visual::after {
+    content: 'EST. 2018';
+    position: absolute; bottom: 3rem; right: 3rem;
+    font-size: 0.65rem; letter-spacing: 0.3em; color: rgba(61,43,31,0.35);
+  }
+
+  /* STORY */
+  .story { padding: 7rem 5vw; max-width: 800px; margin: 0 auto; text-align: center; }
+  .story-tag { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 1.5rem; }
+  .story h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,3vw,2.8rem); color: var(--bark); margin-bottom: 2rem; }
+  .story p { font-size: 1rem; color: #5a4a3a; line-height: 1.9; margin-bottom: 1.5rem; }
+  .story p:first-of-type::first-letter { font-family: 'Playfair Display', serif; font-size: 3.5rem; float: left; line-height: 0.85; margin: 0.1em 0.1em 0 0; color: var(--terracotta); }
+
+  /* STATS */
+  .stats { background: var(--light-gold); padding: 4rem 5vw; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; max-width: 900px; margin: 0 auto; text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--bark); line-height: 1; margin-bottom: 0.4rem; }
+  .stat-label { font-size: 0.78rem; color: #6b5a4e; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* VALUES */
+  .values { padding: 6rem 5vw; background: var(--warm-white); }
+  .section-header { text-align: center; margin-bottom: 3.5rem; }
+  .section-tag { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--terracotta); font-weight: 500; margin-bottom: 0.8rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,3vw,2.8rem); color: var(--bark); }
+  .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+  .value-card { padding: 2.5rem; border: 1px solid rgba(61,43,31,0.08); background: white; animation: fadeUp 0.5s ease both; }
+  .value-icon { font-size: 2.5rem; margin-bottom: 1.2rem; }
+  .value-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--bark); margin-bottom: 0.7rem; }
+  .value-desc { font-size: 0.85rem; color: #888; line-height: 1.7; }
+
+  /* TEAM */
+  .team { padding: 6rem 5vw; }
+  .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .team-card { text-align: center; animation: fadeUp 0.5s ease both; }
+  .team-avatar { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 1.2rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+  .team-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--bark); margin-bottom: 0.3rem; }
+  .team-role { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 0.8rem; }
+  .team-bio { font-size: 0.82rem; color: #888; line-height: 1.6; max-width: 220px; margin: 0 auto; }
+
+  /* SUSTAINABILITY */
+  .sustain {
+    background: var(--ink); padding: 6rem 5vw;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+  }
+  .sustain h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,3vw,2.5rem); color: var(--cream); margin-bottom: 1rem; }
+  .sustain > div > p { color: rgba(250,247,242,0.55); line-height: 1.8; margin-bottom: 2rem; }
+  .sustain-pledges { display: flex; flex-direction: column; gap: 1rem; }
+  .pledge { display: flex; gap: 1rem; align-items: flex-start; }
+  .pledge-icon { font-size: 1.3rem; flex-shrink: 0; }
+  .pledge-text h4 { color: var(--cream); font-size: 0.9rem; margin-bottom: 0.2rem; font-weight: 500; }
+  .pledge-text p { color: rgba(250,247,242,0.45); font-size: 0.8rem; line-height: 1.5; }
+  .sustain-visual { background: rgba(250,247,242,0.04); border: 1px solid rgba(250,247,242,0.1); padding: 3rem; text-align: center; }
+  .sustain-visual .big-icon { font-size: 6rem; margin-bottom: 1.5rem; }
+  .sustain-visual h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--cream); margin-bottom: 0.5rem; }
+  .sustain-visual p { color: rgba(250,247,242,0.45); font-size: 0.82rem; }
+
+  /* CTA */
+  .cta { background: var(--terracotta); padding: 5rem 5vw; text-align: center; }
+  .cta h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,3vw,2.5rem); color: white; margin-bottom: 1rem; }
+  .cta p { color: rgba(255,255,255,0.75); margin-bottom: 2.5rem; font-size: 0.95rem; }
+  .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-white { background: white; color: var(--terracotta); padding: 0.9rem 2.2rem; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; transition: all 0.2s; text-decoration: none; display: inline-block; }
+  .btn-white:hover { background: var(--bark); color: white; }
+  .btn-ghost { background: transparent; color: white; padding: 0.9rem 2.2rem; border: 1.5px solid rgba(255,255,255,0.5); cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: all 0.2s; text-decoration: none; display: inline-block; }
+  .btn-ghost:hover { border-color: white; background: rgba(255,255,255,0.1); }
+
+  /* FULL FOOTER */
+  footer { background: var(--ink); color: var(--cream); padding: 4rem 5vw 2rem; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+  .footer-logo-big { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 1rem; }
+  .footer-logo-big span { color: var(--terracotta); font-style: italic; }
+  .footer-desc { font-size: 0.82rem; color: rgba(250,247,242,0.4); line-height: 1.7; max-width: 260px; }
+  .footer-col h4 { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; font-weight: 500; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.7rem; }
+  .footer-col ul li a { text-decoration: none; color: rgba(250,247,242,0.4); font-size: 0.82rem; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--cream); }
+  .footer-bottom { border-top: 1px solid rgba(250,247,242,0.1); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; }
+  .footer-bottom p { font-size: 0.75rem; color: rgba(250,247,242,0.25); }
+
+  @keyframes fadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+  @media(max-width:900px) { .manifesto, .sustain { grid-template-columns: 1fr; } .manifesto-visual { min-height: 300px; } .values-grid, .team-grid { grid-template-columns: 1fr 1fr; } .stats-grid { grid-template-columns: 1fr 1fr; } .footer-grid { grid-template-columns: 1fr 1fr; } .nav-links { display: none; } }
+</style>
+</head>
+<body>
+<nav>
+  <a href="stationery-shop.html" class="logo">Paperie <span>&</span> Co.</a>
+  <ul class="nav-links">
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="collections.html">Collections</a></li>
+    <li><a href="gifting.html">Gifting</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+  </ul>
+  <a href="cart.html"><button class="cart-btn">🛒 Cart (0)</button></a>
+</nav>
+
+<!-- MANIFESTO -->
+<div class="manifesto">
+  <div class="manifesto-text">
+    <p class="manifesto-tag">✦ Our Manifesto</p>
+    <h1>We Believe in the<br><em>Power of Paper</em></h1>
+    <p class="manifesto-quote">In a world of screens and notifications, the quiet act of writing by hand is a radical act of presence. We make the tools that make that possible.</p>
+  </div>
+  <div class="manifesto-visual">✒️</div>
+</div>
+
+<!-- STORY -->
+<section class="story">
+  <p class="story-tag">Our Story</p>
+  <h2>Started with a Notebook, Built with Love</h2>
+  <p>Paperie & Co. was founded in 2018 by two lifelong journal keepers who couldn't find stationery that was both beautiful and genuinely useful. What started as a small curated shop in Mumbai has grown into a community of over 40,000 thoughtful writers across India.</p>
+  <p>Every item in our catalogue has been personally tested. If we wouldn't reach for it on our own desks, it doesn't earn a place in our shop. We source from independent papermakers, family-run nib workshops, and sustainable material producers — people who believe, as we do, that making something by hand is a kind of love.</p>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-grid">
+    <div><div class="stat-num">40K+</div><div class="stat-label">Happy Customers</div></div>
+    <div><div class="stat-num">192</div><div class="stat-label">Curated Items</div></div>
+    <div><div class="stat-num">28</div><div class="stat-label">Artisan Partners</div></div>
+    <div><div class="stat-num">2018</div><div class="stat-label">Founded</div></div>
+  </div>
+</div>
+
+<!-- VALUES -->
+<section class="values">
+  <div class="section-header">
+    <p class="section-tag">What We Stand For</p>
+    <h2 class="section-title">Our Values</h2>
+  </div>
+  <div class="values-grid">
+    <div class="value-card" style="animation-delay:0s">
+      <div class="value-icon">🌿</div>
+      <h3 class="value-name">Made with Intention</h3>
+      <p class="value-desc">Every product is chosen with care, tested on real desks, and stocked only when it meets our standard for quality and beauty.</p>
+    </div>
+    <div class="value-card" style="animation-delay:0.1s">
+      <div class="value-icon">🤝</div>
+      <h3 class="value-name">Made by People</h3>
+      <p class="value-desc">We partner with small workshops and independent artisans. Every purchase supports a real maker, not a factory floor.</p>
+    </div>
+    <div class="value-card" style="animation-delay:0.2s">
+      <div class="value-icon">♻️</div>
+      <h3 class="value-name">Made to Last</h3>
+      <p class="value-desc">We believe slow consumption is good consumption. We choose materials that age gracefully and packaging that doesn't outlast its purpose.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team">
+  <div class="section-header">
+    <p class="section-tag">The People Behind the Pen</p>
+    <h2 class="section-title">Our Team</h2>
+  </div>
+  <div class="team-grid">
+    <div class="team-card" style="animation-delay:0s">
+      <div class="team-avatar" style="background:#f0e4c0">👩</div>
+      <h3 class="team-name">Ananya Bose</h3>
+      <p class="team-role">Founder & Creative Director</p>
+      <p class="team-bio">Former book designer, lifelong journaler. Ananya sources every collection by hand and writes all the product descriptions herself.</p>
+    </div>
+    <div class="team-card" style="animation-delay:0.1s">
+      <div class="team-avatar" style="background:#e8f0e9">👨</div>
+      <h3 class="team-name">Rohan Kapoor</h3>
+      <p class="team-role">Co-Founder & Operations</p>
+      <p class="team-bio">Supply chain wizard and fountain pen collector. Rohan built our logistics from scratch and still packs every corporate order himself.</p>
+    </div>
+    <div class="team-card" style="animation-delay:0.2s">
+      <div class="team-avatar" style="background:#f0e8e8">👩</div>
+      <h3 class="team-name">Priya Nair</h3>
+      <p class="team-role">Head of Curation</p>
+      <p class="team-bio">Paper scientist and avid letter writer. Priya tests every notebook's paper with seven different ink types before it makes the cut.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SUSTAINABILITY -->
+<div class="sustain">
+  <div>
+    <h2>Sustainability is Not a Feature, It's the Foundation</h2>
+    <p>We've built our business on the belief that beautiful objects and responsible choices are not in conflict. Here's our pledge.</p>
+    <div class="sustain-pledges">
+      <div class="pledge"><div class="pledge-icon">🌱</div><div class="pledge-text"><h4>FSC-Certified Paper Only</h4><p>Every notebook we sell uses responsibly sourced paper.</p></div></div>
+      <div class="pledge"><div class="pledge-icon">📦</div><div class="pledge-text"><h4>Plastic-Free Packaging</h4><p>All our packaging is compostable, recycled, or reusable.</p></div></div>
+      <div class="pledge"><div class="pledge-icon">🌍</div><div class="pledge-text"><h4>Carbon Offset Shipping</h4><p>Every order includes a contribution to verified reforestation projects.</p></div></div>
+      <div class="pledge"><div class="pledge-icon">💚</div><div class="pledge-text"><h4>1% for the Planet Member</h4><p>We donate 1% of annual revenue to environmental nonprofits.</p></div></div>
+    </div>
+  </div>
+  <div class="sustain-visual">
+    <div class="big-icon">🌿</div>
+    <h3>Carbon Neutral Since 2022</h3>
+    <p>Certified by Climate Partner India</p>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Ready to Write Your Story?</h2>
+  <p>Join 40,000+ stationery lovers who've made Paperie & Co. part of their daily ritual.</p>
+  <div class="cta-btns">
+    <a href="shop.html" class="btn-white">Shop the Collection</a>
+    <a href="gifting.html" class="btn-ghost">Explore Gifts</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo-big">Paperie <span>&</span> Co.</div>
+      <p class="footer-desc">Fine stationery for the thoughtful writer. Crafted with care, shipped with love, designed to inspire.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="shop.html">All Products</a></li>
+        <li><a href="collections.html">Collections</a></li>
+        <li><a href="gifting.html">Gift Sets</a></li>
+        <li><a href="shop.html">New Arrivals</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Help</h4>
+      <ul>
+        <li><a href="#">FAQs</a></li>
+        <li><a href="#">Shipping Info</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Track Order</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="about.html">Sustainability</a></li>
+        <li><a href="#">Wholesale</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Paperie & Co. All rights reserved.</p>
+    <p>Made with ✦ for stationery lovers</p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collections — Paperie & Co.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2; --warm-white: #fff9f0; --ink: #1a1410;
+    --bark: #3d2b1f; --terracotta: #c4623a; --sage: #7a9e7e;
+    --gold: #c9a84c; --light-gold: #f0e4c0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); }
+
+  nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 5vw; background: var(--cream); border-bottom: 1px solid rgba(61,43,31,0.12); }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--bark); text-decoration: none; }
+  .logo span { color: var(--terracotta); font-style: italic; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--bark); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--terracotta); }
+  .cart-btn { background: var(--ink); color: var(--cream); border: none; cursor: pointer; padding: 0.55rem 1.3rem; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; transition: background 0.2s; }
+  .cart-btn:hover { background: var(--terracotta); }
+
+  /* HERO */
+  .hero {
+    background: var(--bark);
+    padding: 5rem 5vw 4rem;
+    position: relative; overflow: hidden;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .hero::before { content: ''; position: absolute; bottom: -80px; right: -80px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%); }
+  .hero-tag { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem,4vw,3.5rem); color: var(--cream); line-height: 1.15; margin-bottom: 1rem; }
+  .hero h1 em { color: var(--gold); }
+  .hero p { color: rgba(250,247,242,0.6); font-size: 0.95rem; line-height: 1.7; }
+  .hero-seasons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .season-pill {
+    background: rgba(250,247,242,0.06); border: 1px solid rgba(250,247,242,0.12);
+    padding: 1.2rem; cursor: pointer; transition: all 0.3s;
+    text-align: center;
+  }
+  .season-pill:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); }
+  .season-pill .icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .season-pill .label { font-size: 0.8rem; color: rgba(250,247,242,0.7); font-weight: 500; }
+
+  /* FEATURED COLLECTION */
+  .featured {
+    display: grid; grid-template-columns: 1fr 1fr; min-height: 500px;
+    margin-bottom: 0;
+  }
+  .featured-visual {
+    background: linear-gradient(135deg, #e8d5a0 0%, #d4a070 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8rem; position: relative; overflow: hidden;
+  }
+  .featured-visual::after { content: 'SPRING 2026'; position: absolute; bottom: 2rem; left: 2rem; font-size: 0.65rem; letter-spacing: 0.25em; color: rgba(61,43,31,0.4); }
+  .featured-content { background: var(--warm-white); padding: 5rem 4vw; display: flex; flex-direction: column; justify-content: center; }
+  .coll-tag { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 1rem; }
+  .coll-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,3vw,2.8rem); color: var(--bark); margin-bottom: 1rem; line-height: 1.2; }
+  .coll-desc { font-size: 0.9rem; color: #777; line-height: 1.7; margin-bottom: 2rem; max-width: 420px; }
+  .coll-items { display: flex; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .coll-item-chip { background: var(--light-gold); color: var(--bark); font-size: 0.75rem; padding: 0.35rem 0.9rem; letter-spacing: 0.05em; }
+  .btn-primary { display: inline-block; background: var(--terracotta); color: white; padding: 0.85rem 2rem; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: all 0.2s; text-decoration: none; }
+  .btn-primary:hover { background: var(--bark); transform: translateY(-2px); }
+
+  /* COLLECTIONS GRID */
+  .collections-section { padding: 5rem 5vw; }
+  .section-header { text-align: center; margin-bottom: 3.5rem; }
+  .section-tag { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--terracotta); font-weight: 500; margin-bottom: 0.8rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,3vw,2.8rem); color: var(--bark); }
+  .collections-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .coll-card {
+    overflow: hidden; cursor: pointer; transition: all 0.3s;
+    animation: fadeUp 0.5s ease both;
+  }
+  .coll-card:hover { transform: translateY(-4px); }
+  .coll-card-img {
+    height: 260px; display: flex; align-items: center; justify-content: center;
+    font-size: 5rem; position: relative; overflow: hidden;
+    transition: transform 0.4s;
+  }
+  .coll-card:hover .coll-card-img { transform: scale(1.03); }
+  .coll-card-body { padding: 1.5rem; background: white; }
+  .coll-card-tag { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .coll-card-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--bark); margin-bottom: 0.5rem; }
+  .coll-card-count { font-size: 0.78rem; color: #aaa; margin-bottom: 1rem; }
+  .coll-card-link { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--terracotta); text-decoration: none; font-weight: 500; }
+  .coll-card-link:hover { color: var(--bark); }
+
+  /* EDITORIAL */
+  .editorial { background: var(--ink); padding: 5rem 5vw; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .editorial-text h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,3vw,2.8rem); color: var(--cream); margin-bottom: 1rem; }
+  .editorial-text p { color: rgba(250,247,242,0.55); font-size: 0.9rem; line-height: 1.8; margin-bottom: 2rem; }
+  .editorial-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .ed-item { background: rgba(250,247,242,0.05); padding: 1.5rem; border: 1px solid rgba(250,247,242,0.08); }
+  .ed-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+  .ed-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--cream); margin-bottom: 0.3rem; }
+  .ed-price { font-size: 0.8rem; color: var(--gold); }
+
+  footer { background: var(--ink); color: var(--cream); padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(250,247,242,0.08); }
+  footer p { font-size: 0.75rem; color: rgba(250,247,242,0.3); }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; }
+  .footer-logo span { color: var(--terracotta); font-style: italic; }
+
+  @keyframes fadeUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+  @media(max-width:900px) { .hero, .featured, .collections-grid, .editorial { grid-template-columns: 1fr; } .nav-links { display: none; } }
+</style>
+</head>
+<body>
+<nav>
+  <a href="stationery-shop.html" class="logo">Paperie <span>&</span> Co.</a>
+  <ul class="nav-links">
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="collections.html" class="active">Collections</a></li>
+    <li><a href="gifting.html">Gifting</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <a href="cart.html"><button class="cart-btn">🛒 Cart (0)</button></a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <p class="hero-tag">✦ Curated with Intention</p>
+    <h1>Collections for<br>Every <em>Season</em></h1>
+    <p>Each collection is handpicked to complement your creative ritual — from the morning journaler to the desk aesthete.</p>
+  </div>
+  <div class="hero-seasons">
+    <div class="season-pill"><div class="icon">🌸</div><div class="label">Spring '26</div></div>
+    <div class="season-pill"><div class="icon">☀️</div><div class="label">Summer</div></div>
+    <div class="season-pill"><div class="icon">🍂</div><div class="label">Autumn</div></div>
+    <div class="season-pill"><div class="icon">❄️</div><div class="label">Winter</div></div>
+  </div>
+</div>
+
+<!-- FEATURED -->
+<div class="featured">
+  <div class="featured-visual">🌿</div>
+  <div class="featured-content">
+    <p class="coll-tag">✦ Featured Collection</p>
+    <h2 class="coll-title">The Botanist's Desk</h2>
+    <p class="coll-desc">Inspired by pressed herbarium specimens and natural forms — earthy palettes, textured papers, and tools that feel grown rather than made.</p>
+    <div class="coll-items">
+      <span class="coll-item-chip">Sage Green Journal</span>
+      <span class="coll-item-chip">Botanical Fineliner Set</span>
+      <span class="coll-item-chip">Seed Paper Cards</span>
+      <span class="coll-item-chip">Cork Pen Rest</span>
+    </div>
+    <a href="shop.html" class="btn-primary">Shop This Collection →</a>
+  </div>
+</div>
+
+<!-- COLLECTIONS GRID -->
+<section class="collections-section">
+  <div class="section-header">
+    <p class="section-tag">All Collections</p>
+    <h2 class="section-title">Find Your Aesthetic</h2>
+  </div>
+  <div class="collections-grid">
+    <div class="coll-card" style="animation-delay:0s">
+      <div class="coll-card-img" style="background:linear-gradient(135deg,#e8d5a0,#d4a070)">🏺</div>
+      <div class="coll-card-body">
+        <p class="coll-card-tag" style="color:#c4623a">Warm Terracotta</p>
+        <h3 class="coll-card-name">The Artisan's Study</h3>
+        <p class="coll-card-count">14 items</p>
+        <a href="shop.html" class="coll-card-link">Browse Collection →</a>
+      </div>
+    </div>
+    <div class="coll-card" style="animation-delay:0.1s">
+      <div class="coll-card-img" style="background:linear-gradient(135deg,#d4dfe8,#a8bfcc)">🌊</div>
+      <div class="coll-card-body">
+        <p class="coll-card-tag" style="color:#5c8fa0">Cool Blue</p>
+        <h3 class="coll-card-name">The Minimalist's Edit</h3>
+        <p class="coll-card-count">11 items</p>
+        <a href="shop.html" class="coll-card-link">Browse Collection →</a>
+      </div>
+    </div>
+    <div class="coll-card" style="animation-delay:0.2s">
+      <div class="coll-card-img" style="background:linear-gradient(135deg,#f0e8d4,#d4c4a0)">📜</div>
+      <div class="coll-card-body">
+        <p class="coll-card-tag" style="color:#c9a84c">Heritage Gold</p>
+        <h3 class="coll-card-name">The Scholar's Archive</h3>
+        <p class="coll-card-count">18 items</p>
+        <a href="shop.html" class="coll-card-link">Browse Collection →</a>
+      </div>
+    </div>
+    <div class="coll-card" style="animation-delay:0.3s">
+      <div class="coll-card-img" style="background:linear-gradient(135deg,#e8d4e0,#d4a0c0)">🌸</div>
+      <div class="coll-card-body">
+        <p class="coll-card-tag" style="color:#a05080">Dusty Rose</p>
+        <h3 class="coll-card-name">The Soft Hour</h3>
+        <p class="coll-card-count">9 items</p>
+        <a href="shop.html" class="coll-card-link">Browse Collection →</a>
+      </div>
+    </div>
+    <div class="coll-card" style="animation-delay:0.4s">
+      <div class="coll-card-img" style="background:linear-gradient(135deg,#d4e0d4,#a0bfa0)">🌿</div>
+      <div class="coll-card-body">
+        <p class="coll-card-tag" style="color:#5a8a5a">Forest Sage</p>
+        <h3 class="coll-card-name">The Botanist's Desk</h3>
+        <p class="coll-card-count">12 items</p>
+        <a href="shop.html" class="coll-card-link">Browse Collection →</a>
+      </div>
+    </div>
+    <div class="coll-card" style="animation-delay:0.5s">
+      <div class="coll-card-img" style="background:linear-gradient(135deg,#1a1410,#3d2b1f)">🖤</div>
+      <div class="coll-card-body">
+        <p class="coll-card-tag" style="color:#c9a84c">Ink & Dark</p>
+        <h3 class="coll-card-name">The Noir Cabinet</h3>
+        <p class="coll-card-count">16 items</p>
+        <a href="shop.html" class="coll-card-link">Browse Collection →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDITORIAL -->
+<div class="editorial">
+  <div class="editorial-text">
+    <h2>The Curators' Picks</h2>
+    <p>Our team personally selects and tests every item before it earns its place in a collection. These are the pieces we reach for, gift, and write home about.</p>
+    <a href="shop.html" class="btn-primary">Shop All Picks</a>
+  </div>
+  <div class="editorial-grid">
+    <div class="ed-item"><div class="ed-icon">📓</div><div class="ed-name">Linen Hardcover</div><div class="ed-price">₹850</div></div>
+    <div class="ed-item"><div class="ed-icon">🖊️</div><div class="ed-name">Fineliner Set</div><div class="ed-price">₹1,200</div></div>
+    <div class="ed-item"><div class="ed-icon">🗂️</div><div class="ed-name">Walnut Tray</div><div class="ed-price">₹1,499</div></div>
+    <div class="ed-item"><div class="ed-icon">🎀</div><div class="ed-name">Writer's Set</div><div class="ed-price">₹2,800</div></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Paperie <span>&</span> Co.</div>
+  <p>© 2026 Paperie & Co. All rights reserved.</p>
+</footer>
+</body>
+</html>

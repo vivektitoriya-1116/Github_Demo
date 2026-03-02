@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart — Paperie & Co.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2; --warm-white: #fff9f0; --ink: #1a1410;
+    --bark: #3d2b1f; --terracotta: #c4623a; --sage: #7a9e7e;
+    --dusty-rose: #d4a5a0; --gold: #c9a84c; --light-gold: #f0e4c0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 5vw; background: var(--cream);
+    border-bottom: 1px solid rgba(61,43,31,0.12);
+  }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--bark); text-decoration: none; }
+  .logo span { color: var(--terracotta); font-style: italic; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--bark); font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--terracotta); }
+  .cart-btn { background: var(--ink); color: var(--cream); border: none; cursor: pointer; padding: 0.55rem 1.3rem; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; transition: background 0.2s; }
+  .cart-btn:hover { background: var(--terracotta); }
+
+  /* PAGE HERO */
+  .page-hero {
+    background: var(--bark); padding: 4rem 5vw 3rem;
+    position: relative; overflow: hidden;
+  }
+  .page-hero::before {
+    content: ''; position: absolute; top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%);
+  }
+  .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem,4vw,3.2rem); color: var(--cream); }
+  .page-hero p { color: rgba(250,247,242,0.55); font-size: 0.9rem; margin-top: 0.5rem; }
+
+  /* CART LAYOUT */
+  .cart-layout {
+    display: grid; grid-template-columns: 1fr 360px; gap: 3rem;
+    padding: 3rem 5vw 5rem; max-width: 1200px; margin: 0 auto;
+  }
+  .cart-items { }
+  .cart-item {
+    display: grid; grid-template-columns: 80px 1fr auto;
+    gap: 1.5rem; align-items: center;
+    padding: 1.5rem 0; border-bottom: 1px solid rgba(61,43,31,0.1);
+    animation: fadeUp 0.5s ease both;
+  }
+  .item-img {
+    width: 80px; height: 80px; background: var(--light-gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+  }
+  .item-cat { font-size: 0.68rem; color: var(--terracotta); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+  .item-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--bark); margin-bottom: 0.3rem; }
+  .item-variant { font-size: 0.78rem; color: #999; }
+  .item-right { text-align: right; }
+  .item-price { font-weight: 500; font-size: 1rem; color: var(--bark); margin-bottom: 0.8rem; }
+  .qty-control { display: flex; align-items: center; gap: 0.5rem; justify-content: flex-end; margin-bottom: 0.8rem; }
+  .qty-btn { width: 28px; height: 28px; background: transparent; border: 1px solid rgba(61,43,31,0.3); cursor: pointer; font-size: 1rem; color: var(--bark); transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+  .qty-btn:hover { background: var(--terracotta); color: white; border-color: var(--terracotta); }
+  .qty-num { width: 32px; text-align: center; font-size: 0.9rem; font-weight: 500; }
+  .remove-btn { font-size: 0.72rem; color: #bbb; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; background: none; border: none; transition: color 0.2s; }
+  .remove-btn:hover { color: var(--terracotta); }
+
+  /* ORDER SUMMARY */
+  .order-summary {
+    background: var(--bark); padding: 2.5rem; color: var(--cream);
+    position: sticky; top: 80px; height: fit-content;
+  }
+  .summary-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 2rem; }
+  .summary-row { display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 0.88rem; }
+  .summary-row span:first-child { color: rgba(250,247,242,0.6); }
+  .summary-divider { border: none; border-top: 1px solid rgba(250,247,242,0.15); margin: 1.5rem 0; }
+  .summary-total { display: flex; justify-content: space-between; font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-bottom: 2rem; }
+  .checkout-btn { width: 100%; background: var(--gold); color: var(--bark); border: none; padding: 1rem; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.2s; }
+  .checkout-btn:hover { background: var(--cream); }
+  .continue-link { display: block; text-align: center; margin-top: 1rem; font-size: 0.78rem; color: rgba(250,247,242,0.4); text-decoration: none; transition: color 0.2s; }
+  .continue-link:hover { color: var(--cream); }
+  .promo-row { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .promo-input { flex: 1; background: rgba(250,247,242,0.08); border: 1px solid rgba(250,247,242,0.2); color: var(--cream); padding: 0.6rem 0.8rem; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; }
+  .promo-input::placeholder { color: rgba(250,247,242,0.3); }
+  .promo-btn { background: transparent; border: 1px solid rgba(250,247,242,0.3); color: var(--cream); padding: 0.6rem 1rem; cursor: pointer; font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.2s; }
+  .promo-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--bark); }
+
+  .empty-cart { text-align: center; padding: 5rem 2rem; }
+  .empty-cart .icon { font-size: 4rem; margin-bottom: 1.5rem; }
+  .empty-cart h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--bark); margin-bottom: 0.8rem; }
+  .empty-cart p { color: #999; margin-bottom: 2rem; }
+  .btn-primary { display: inline-block; background: var(--terracotta); color: white; padding: 0.85rem 2rem; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; transition: all 0.2s; text-decoration: none; }
+  .btn-primary:hover { background: var(--bark); }
+
+  footer { background: var(--ink); color: var(--cream); padding: 2rem 5vw; display: flex; justify-content: space-between; align-items: center; }
+  footer p { font-size: 0.75rem; color: rgba(250,247,242,0.3); }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; }
+  .footer-logo span { color: var(--terracotta); font-style: italic; }
+
+  @keyframes fadeUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+  @media(max-width:768px) { .cart-layout { grid-template-columns: 1fr; } .nav-links { display: none; } .order-summary { position: static; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="stationery-shop.html" class="logo">Paperie <span>&</span> Co.</a>
+  <ul class="nav-links">
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="collections.html">Collections</a></li>
+    <li><a href="gifting.html">Gifting</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <button class="cart-btn">🛒 Cart (3)</button>
+</nav>
+
+<div class="page-hero">
+  <h1>Your Cart</h1>
+  <p>3 items waiting for you</p>
+</div>
+
+<div class="cart-layout">
+  <!-- ITEMS -->
+  <div class="cart-items" id="cartItems">
+    <div class="cart-item" style="animation-delay:0s">
+      <div class="item-img">📓</div>
+      <div class="item-info">
+        <p class="item-cat">Notebooks</p>
+        <h3 class="item-name">Linen Hardcover Journal</h3>
+        <p class="item-variant">Dusty Rose · Dot Grid</p>
+      </div>
+      <div class="item-right">
+        <div class="item-price">₹850</div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">1</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <button class="remove-btn" onclick="removeItem(this)">Remove</button>
+      </div>
+    </div>
+    <div class="cart-item" style="animation-delay:0.1s">
+      <div class="item-img">🖊️</div>
+      <div class="item-info">
+        <p class="item-cat">Pens</p>
+        <h3 class="item-name">Copper-Tip Fineliner Set</h3>
+        <p class="item-variant">12 colours</p>
+      </div>
+      <div class="item-right">
+        <div class="item-price">₹1,200</div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">1</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <button class="remove-btn" onclick="removeItem(this)">Remove</button>
+      </div>
+    </div>
+    <div class="cart-item" style="animation-delay:0.2s">
+      <div class="item-img">🎀</div>
+      <div class="item-info">
+        <p class="item-cat">Gift Sets</p>
+        <h3 class="item-name">The Writer's Companion</h3>
+        <p class="item-variant">Classic · Gift Boxed</p>
+      </div>
+      <div class="item-right">
+        <div class="item-price">₹2,800</div>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(this,-1)">−</button>
+          <span class="qty-num">1</span>
+          <button class="qty-btn" onclick="changeQty(this,1)">+</button>
+        </div>
+        <button class="remove-btn" onclick="removeItem(this)">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <aside class="order-summary">
+    <h2 class="summary-title">Order Summary</h2>
+    <div class="summary-row"><span>Subtotal</span><span id="subtotal">₹4,850</span></div>
+    <div class="summary-row"><span>Shipping</span><span style="color:#7a9e7e">Free</span></div>
+    <div class="summary-row"><span>Tax (5%)</span><span id="tax">₹242</span></div>
+    <hr class="summary-divider">
+    <div class="summary-total"><span>Total</span><span id="total">₹5,092</span></div>
+    <div class="promo-row">
+      <input class="promo-input" type="text" placeholder="Promo code">
+      <button class="promo-btn">Apply</button>
+    </div>
+    <button class="checkout-btn">Proceed to Checkout →</button>
+    <a href="shop.html" class="continue-link">← Continue Shopping</a>
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-logo">Paperie <span>&</span> Co.</div>
+  <p>© 2026 Paperie & Co. All rights reserved.</p>
+</footer>
+
+<script>
+  const prices = [850, 1200, 2800];
+  function updateSummary() {
+    const items = document.querySelectorAll('.cart-item');
+    let sub = 0;
+    items.forEach((item, i) => {
+      const qty = parseInt(item.querySelector('.qty-num').textContent);
+      sub += prices[i] * qty;
+    });
+    document.getElementById('subtotal').textContent = '₹' + sub.toLocaleString('en-IN');
+    const tax = Math.round(sub * 0.05);
+    document.getElementById('tax').textContent = '₹' + tax.toLocaleString('en-IN');
+    document.getElementById('total').textContent = '₹' + (sub + tax).toLocaleString('en-IN');
+  }
+  function changeQty(btn, delta) {
+    const span = btn.parentElement.querySelector('.qty-num');
+    let val = parseInt(span.textContent) + delta;
+    if (val < 1) val = 1;
+    span.textContent = val;
+    updateSummary();
+  }
+  function removeItem(btn) {
+    btn.closest('.cart-item').style.opacity = '0';
+    btn.closest('.cart-item').style.transform = 'translateX(20px)';
+    btn.closest('.cart-item').style.transition = 'all 0.3s';
+    setTimeout(() => { btn.closest('.cart-item').remove(); updateSummary(); }, 300);
+  }
+</script>
+</body>
+</html>
